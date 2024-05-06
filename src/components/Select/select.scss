@@ -1,0 +1,114 @@
+@use "../../colors.scss";
+
+.select {
+  position: relative;
+  width: 100%;
+  color: var(--paragraph);
+  &:has(&__menu-btn) {
+    width: fit-content;
+  }
+
+  &__menu-btn {
+    padding: 1rem;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__menu-btn ~ &__dropdown {
+    width: 19.2rem;
+    right: 0;
+    transform: translateX(calc(50% - 12.5px));
+  }
+
+  &__menu-btn.header ~ &__dropdown {
+    transform: unset;
+  }
+
+  &__menu-btn ~ &__dropdown > &__option {
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+
+  &__menu-btn ~ &__dropdown > &__option:nth-child(2) {
+    color: colors.$red;
+  }
+
+  &__button {
+    width: 100%;
+    font-family: inherit;
+    background-color: var(--main-color);
+    color: inherit;
+    padding: 0.8rem 1.58rem 0.9rem 1.6rem;
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__button.active {
+    border: 1px solid colors.$main-purple;
+  }
+
+  &__button:focus {
+    outline: none;
+  }
+  &__value {
+    text-align: left;
+  }
+
+  &__dropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    background-color: var(--dropdown-bg);
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin-top: 0.7rem;
+    max-height: 11.7rem;
+    overflow-y: auto;
+  }
+
+  &__option {
+    padding: 0.4rem;
+    position: relative;
+    cursor: pointer;
+    color: colors.$medium-grey;
+    transition: background-color 0.3s;
+  }
+
+  &__option.hover {
+    background-color: colors.$main-purple-light;
+  }
+
+  &__option.active {
+    background-color: colors.$main-purple-hover-light;
+  }
+
+  &__option.active.hover {
+    background-color: rgba(169, 164, 255, 0.4);
+  }
+
+  &__option:active,
+  &__option.active:active {
+    background-color: rgba(169, 164, 255, 0.7);
+  }
+
+  &__dropdown::-webkit-scrollbar {
+    width: 7px;
+  }
+  &__dropdown::-webkit-scrollbar-track {
+    background: var(--dropdown-bg);
+    border-radius: 25px;
+  }
+
+  &__dropdown::-webkit-scrollbar-thumb {
+    background: colors.$medium-grey;
+    border-radius: 25px;
+  }
+}

@@ -1,0 +1,31 @@
+@use "../../colors.scss";
+
+.board-view {
+  padding: 2.4rem 0rem 5rem 2.4rem;
+  width: 100%;
+  background-color: var(--color-background);
+  display: flex;
+  gap: 2.4rem;
+  overflow-y: hidden;
+  overflow-x: auto; //???
+
+  &__new-column {
+    border: none;
+    font-family: inherit;
+    width: 28rem;
+    margin-top: 3.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    background: var(--new-column-bgc);
+    color: colors.$medium-grey;
+  }
+
+  &__new-column:hover {
+    color: colors.$main-purple;
+    box-shadow: 0 0 0 1px colors.$main-purple;
+  }
+}

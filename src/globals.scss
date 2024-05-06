@@ -1,0 +1,80 @@
+@use "colors";
+
+:root {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  // background-color: var(--main-color);
+  // scrollbar-gutter: stable;
+  // padding: 5rem;
+}
+
+#root {
+  height: 100%;
+}
+
+a:link,
+a:visited {
+  text-decoration: inherit;
+  // color: #ffffff;
+}
+
+body {
+  // color: #ffffff;
+  font-weight: 700;
+  height: 100vh;
+  background-color: var(--color-background);
+}
+
+.hXL {
+  font-weight: 700;
+  font-size: 2.4rem;
+  line-height: 3rem;
+}
+
+.hL {
+  font-weight: 700;
+  font-size: 1.8rem;
+  line-height: 2.3rem;
+}
+
+.hM {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.9rem;
+}
+
+.hS {
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  letter-spacing: 2.4px;
+}
+
+.pL {
+  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 2.3rem;
+}
+
+.pM {
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.form {
+  width: 48rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--main-color);
+  padding: 3.2rem;
+  border-radius: 6px;
+}

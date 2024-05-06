@@ -1,0 +1,51 @@
+@use "../../colors.scss";
+
+.text-field {
+  position: relative;
+  width: 100%;
+  &__input {
+    background-color: var(--main-color);
+    width: 100%;
+    height: 4rem;
+    font-family: inherit;
+    padding: 0.8rem 1.6rem 0.9rem;
+    color: var(--paragraph);
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    border-radius: 4px;
+    transition: box-shadow 0.3s;
+  }
+
+  &__input::placeholder {
+    opacity: 0.25;
+  }
+  &__input:hover {
+    box-shadow: 0 0 0 1px colors.$main-purple;
+  }
+
+  &__input:focus {
+    outline: 2px solid colors.$main-purple;
+  }
+  &__error {
+    display: none;
+    position: absolute;
+    right: 1.6rem;
+    top: 0.8rem;
+  }
+}
+
+.big .text-field {
+  &__input {
+    resize: none;
+    height: 11.2rem;
+  }
+}
+
+.error .text-field {
+  &__input {
+    border: 1px solid colors.$red;
+  }
+  &__error {
+    display: block;
+    color: colors.$red;
+  }
+}

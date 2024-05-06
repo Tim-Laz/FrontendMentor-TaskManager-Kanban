@@ -1,0 +1,14 @@
+@use "../../colors.scss";
+
+.nav-board {
+  width: 27.5rem;
+  &__title {
+    color: colors.$medium-grey;
+    margin-left: 3.2rem;
+    margin-bottom: 1.9rem;
+  }
+  &__items {
+    display: flex;
+    flex-direction: column;
+  }
+}

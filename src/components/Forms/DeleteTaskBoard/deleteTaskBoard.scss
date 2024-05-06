@@ -1,0 +1,18 @@
+@use "../../../colors.scss";
+
+.delete-task-board {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  &__heading {
+    color: colors.$red;
+  }
+  &__text {
+    color: colors.$medium-grey;
+  }
+
+  &__btns {
+    display: flex;
+    gap: 1.6rem;
+  }
+}

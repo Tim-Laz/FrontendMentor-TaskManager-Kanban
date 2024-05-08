@@ -4,8 +4,13 @@
   position: relative;
   width: 100%;
   color: var(--paragraph);
+  z-index: 1;
   &:has(&__menu-btn) {
     width: fit-content;
+  }
+
+  &__hiddenInput {
+    display: none;
   }
 
   &__menu-btn {
@@ -35,6 +40,10 @@
 
   &__menu-btn ~ &__dropdown > &__option:nth-child(2) {
     color: colors.$red;
+  }
+
+  &__menu-btn.disabled {
+    cursor: unset;
   }
 
   &__button {

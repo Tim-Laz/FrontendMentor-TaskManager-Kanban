@@ -5,25 +5,13 @@ import "./mainPage.scss";
 type Props = {
   sidebar: boolean;
   handleHide: () => void;
-  activeBoard: string;
-  handleActiveBoard: (boardName: string) => void;
 };
 
-export default function MainPage({
-  sidebar,
-  handleHide,
-  activeBoard,
-  handleActiveBoard,
-}: Props) {
+export default function MainPage({ sidebar, handleHide }: Props) {
   return (
     <div className="main-page">
-      <NavBar
-        sidebar={sidebar}
-        handleHide={handleHide}
-        activeBoard={activeBoard}
-        handleActiveBoard={handleActiveBoard}
-      />
-      <BoardView activeBoard={activeBoard} />
+      <NavBar sidebar={sidebar} handleHide={handleHide} />
+      <BoardView />
     </div>
   );
 }

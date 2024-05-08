@@ -7,6 +7,7 @@ type Props = {
   value?: string;
   errorText?: string;
   inputName: string;
+  autoFocus?: boolean;
 };
 
 export default function TextField({
@@ -16,39 +17,45 @@ export default function TextField({
   value = "",
   errorText = "Can't be empty",
   inputName,
+  autoFocus = false,
 }: Props) {
-  // const [text, setText] = useState(value !== undefined ? value : "");
-  // const handleChange: React.ChangeEventHandler<
-  //   HTMLTextAreaElement | HTMLInputElement
-  // > = (e) => {
-  //   setText(e.target.value);
-  // };
+  const [text, setText] = useState(value !== undefined ? value : "");
+  const handleChange: React.ChangeEventHandler<
+    HTMLTextAreaElement | HTMLInputElement
+  > = (e) => {
+    setText(e.target.value);
+  };
   return (
     <div
       className={
-        (error ? "error text-field" : "text-field") + (big ? " big" : "")
+        (error && !text.trim() ? "error text-field" : "text-field") +
+        (big ? " big" : "")
       }
     >
       {big ? (
         <textarea
+          autoFocus={autoFocus}
           name={inputName}
-          // onChange={handleChange}
+          onChange={handleChange}
           className="text-field__input pL"
           placeholder={placeholder}
-          defaultValue={value}
+          value={text}
         ></textarea>
       ) : (
         <input
+          autoFocus={autoFocus}
           name={inputName}
-          // onChange={handleChange}
+          onChange={handleChange}
           className="text-field__input pL"
           type="text"
           placeholder={placeholder}
-          defaultValue={value}
+          value={text}
         ></input>
       )}
 
-      {error && <p className="text-field__error pL">{errorText}</p>}
+      {error && !text.trim() && (
+        <p className="text-field__error pL">{errorText}</p>
+      )}
     </div>
   );
 }

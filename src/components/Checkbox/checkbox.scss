@@ -41,6 +41,7 @@
 
   &__label {
     color: var(--paragraph);
+    cursor: pointer;
   }
 
   &__input:checked + &__label {

@@ -6,21 +6,30 @@ import TextList from "../../TextList/TextList";
 import { useDataDispatch } from "../../../Reducers/dataContexReducer";
 import { v4 as uuidv4 } from "uuid";
 import { useActionDispatch } from "../../../Reducers/actionContexReducer";
+import { useActiveDispatch } from "../../../Reducers/activeContextReducer";
+import { useState } from "react";
 
 type Props = {
   boardData?: any;
 };
 
 export default function AddEditBoard({ boardData }: Props) {
-  const dataDispatch = useDataDispatch();
-  const actionDispatch = useActionDispatch();
+  const [emptyInputs, setEmptyInputs] = useState<string[]>([]);
+  const dispatchData = useDataDispatch();
+  const dispatchAction = useActionDispatch();
+  const dispatchActive = useActiveDispatch();
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);
     let boardName;
     const columns = [];
+    const emptyInputs: string[] = [];
     for (const [key, value] of formData.entries()) {
+      if (String(value).trim() === "") {
+        emptyInputs.push(key);
+      }
       if (key.startsWith("board")) {
         boardName = value;
       }
@@ -29,20 +38,36 @@ export default function AddEditBoard({ boardData }: Props) {
       }
     }
 
-    boardData
-      ? dataDispatch({
-          type: "edit board",
-          id: boardData.id,
-          name: boardName,
-          columns: columns,
-        })
-      : dataDispatch({
-          type: "add board",
-          id: "board-" + uuidv4(),
-          name: boardName,
-          columns: columns,
-        });
-    actionDispatch({ type: "" });
+    console.log(emptyInputs);
+    console.log(boardName, columns);
+
+    if (emptyInputs.length > 0) {
+      setEmptyInputs(emptyInputs);
+      return;
+    }
+
+    if (boardData) {
+      dispatchData({
+        type: "edit board",
+        id: boardData.id,
+        name: boardName,
+        columns: columns,
+      });
+    } else {
+      const newId = "board-" + uuidv4();
+      dispatchData({
+        type: "add board",
+        id: newId,
+        name: boardName,
+        columns: columns,
+      });
+      dispatchActive({
+        type: "change active board",
+        boardID: newId,
+      });
+    }
+
+    dispatchAction({ type: "" });
   }
 
   return (
@@ -53,14 +78,17 @@ export default function AddEditBoard({ boardData }: Props) {
       <div className="add-edit-board__name">
         <label className="add-edit-board__label pM">Board Name</label>
         <TextField
+          autoFocus={true}
           value={boardData ? boardData?.name : ""}
           inputName="boardName"
           placeholder="e.g. Web Design"
+          error={emptyInputs.includes("boardName")}
         />
       </div>
       <TextList
         items={boardData?.columns ? boardData.columns : []}
         itemType="column"
+        emptyInputs={emptyInputs}
       />
       <Button btnAction="submit" onClick={() => {}} type={"primary-S"}>
         {boardData ? "Save Changes" : "Create New Board"}

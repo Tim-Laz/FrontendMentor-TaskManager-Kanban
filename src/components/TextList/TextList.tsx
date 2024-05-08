@@ -5,12 +5,12 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 type Props = {
-  handleDelete?: (id: string) => void; //remove
   items?: { id: string; name: string }[];
   itemType: "subtask" | "column";
+  emptyInputs?: string[];
 };
 
-export default function TextList({ items = [], itemType }: Props) {
+export default function TextList({ items = [], itemType, emptyInputs }: Props) {
   const [list, setList] = useState(items);
 
   function handleAdd() {
@@ -28,11 +28,12 @@ export default function TextList({ items = [], itemType }: Props) {
       {list.length > 0 && (
         <>
           <label className="textlist__label pM">
-            {itemType === "subtask" ? "Subtasks" : "Board Columns"}
+            {itemType === "column" ? "Board Columns" : "Subtasks"}
           </label>
           {list.map((item) => {
             return (
               <TextListItem
+                error={emptyInputs?.includes(item.id)}
                 key={item.id}
                 value={item.name}
                 id={item.id}
@@ -47,7 +48,7 @@ export default function TextList({ items = [], itemType }: Props) {
       )}
 
       <Button onClick={handleAdd} type={"secondary"}>
-        + Add New Column
+        {"+ Add New" + (itemType === "column" ? " Column" : " Subtask")}
       </Button>
     </div>
   );

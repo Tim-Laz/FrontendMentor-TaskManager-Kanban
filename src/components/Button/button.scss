@@ -62,3 +62,11 @@
 .btn-destructive:hover {
   background-color: colors.$red-hover;
 }
+
+.btn.disabled {
+  opacity: 0.25;
+  &:hover {
+    background-color: colors.$main-purple;
+  }
+  cursor: unset;
+}

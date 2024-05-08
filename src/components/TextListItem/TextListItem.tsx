@@ -7,6 +7,7 @@ type subtaskProps = {
   onClick: (id: string) => void;
   value?: string;
   id: string;
+  error?: boolean;
 };
 
 export default function TextListItem({
@@ -14,11 +15,18 @@ export default function TextListItem({
   onClick,
   value,
   id,
+  error,
 }: subtaskProps) {
   return (
-    <div className="subtask">
-      <TextField inputName={id} value={value} placeholder={placeholder} />
-      <button onClick={() => onClick(id)} className="subtask__btn">
+    <div className="text-list-item">
+      <TextField
+        error={error}
+        inputName={id}
+        value={value}
+        placeholder={placeholder}
+        autoFocus={!value}
+      />
+      <button onClick={() => onClick(id)} className="text-list-item__btn">
         <IconCross />
       </button>
     </div>

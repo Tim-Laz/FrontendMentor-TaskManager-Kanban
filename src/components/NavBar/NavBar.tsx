@@ -5,40 +5,42 @@ import ThemeChange from "../ThemeChange/ThemeChange";
 import HideButton from "../HideButton/HideButton.tsx";
 import { useData } from "../../Reducers/dataContexReducer.tsx";
 import { useActionDispatch } from "../../Reducers/actionContexReducer.tsx";
+import {
+  useActive,
+  useActiveDispatch,
+} from "../../Reducers/activeContextReducer.tsx";
 
 type Props = {
   sidebar: boolean;
   handleHide: () => void;
-  activeBoard: string;
-  handleActiveBoard: (boardName: string) => void;
 };
 
-export default function NavBar({
-  sidebar,
-  handleHide,
-  activeBoard,
-  handleActiveBoard,
-}: Props) {
+export default function NavBar({ sidebar, handleHide }: Props) {
   const data = useData();
 
   const dispatchAction = useActionDispatch();
+  const dispatchActive = useActiveDispatch();
+  const activeBoard = useActive();
+  function handleActiveBoard(boardID) {
+    dispatchActive({ type: "change active board", boardID: boardID });
+  }
 
   function handleCreateBoard() {
     dispatchAction({ type: "adding board" });
   }
 
-  const Boards = data.boards.map((board) => (
+  const Boards = data.boards?.map((board) => (
     <NavBoardItem
-      onClick={() => handleActiveBoard(board.name)}
-      key={board.name}
-      status={board.name === activeBoard ? "active" : ""}
+      onClick={() => handleActiveBoard(board.id)}
+      key={board.id}
+      status={board.id === activeBoard ? "active" : ""}
     >
       {board.name}
     </NavBoardItem>
   ));
   return (
     <aside className={"nav-bar" + (sidebar ? "" : " hidden")}>
-      <NavBoard boardCount={data.boards.length}>
+      <NavBoard boardCount={data.boards?.length || 0}>
         {Boards}
         <NavBoardItem onClick={() => handleCreateBoard()} status={"create"}>
           + Create New Board

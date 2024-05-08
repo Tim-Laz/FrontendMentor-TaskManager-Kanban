@@ -36,6 +36,22 @@ function actionReducer(data: string, action: Record<string, string>) {
     case "editing board": {
       return "editing board";
     }
+    case "deleting board confirmation": {
+      return "deleting board confirmation";
+    }
+    case "adding new task": {
+      return "adding new task";
+    }
+
+    case "viewing task": {
+      return "viewing task";
+    }
+    case "editing task": {
+      return "editing task";
+    }
+    case "deleting task confirmation": {
+      return "deleting task confirmation";
+    }
     default:
       return "";
   }

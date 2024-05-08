@@ -4,40 +4,126 @@ import TextField from "../../TextField/TextField";
 import Select from "../../Select/Select";
 import { useState } from "react";
 import TextListItem from "../../TextListItem/TextListItem";
+import TextList from "../../TextList/TextList";
+import { v4 as uuidv4 } from "uuid";
+import { useData, useDataDispatch } from "../../../Reducers/dataContexReducer";
+import { useActive } from "../../../Reducers/activeContextReducer";
+import { useActionDispatch } from "../../../Reducers/actionContexReducer";
 
 type taskProps = {
-  taskData?: Record<string, string | string[]>;
+  taskData?: {
+    id: string;
+    title: string;
+    description: string;
+    status: string;
+    columnID: string;
+    subtasks: { id: string; title: string; isCompleted: boolean }[];
+  };
 };
 
 export default function AddEditTask({ taskData }: taskProps) {
   const [subtasks, setSubtasks] = useState(
     Array.isArray(taskData?.subtasks) ? taskData?.subtasks : ["", ""]
   );
+  const [emptyInputs, setEmptyInputs] = useState<string[]>([]);
   const editTask = taskData ? true : false;
 
-  function handleDeleteSubtask(index: number) {
-    const newSubtasks = subtasks.filter((subtask, i) => index !== i);
-    setSubtasks(newSubtasks);
-  }
+  const dispatchData = useDataDispatch();
+  const dispatchAction = useActionDispatch();
 
-  function addNewSubtask() {
-    const newSubtasks = [...subtasks, ""];
-    setSubtasks(newSubtasks);
+  const activeBoard = useActive();
+  const data = useData();
+  const activeBoardIndex = data.boards.findIndex(
+    (board) => board.id === activeBoard
+  );
+  const columnsInfo = data.boards[activeBoardIndex].columns.reduce(
+    (acc: { optionID: string[]; optionName: string[] }, column) => {
+      acc.optionID.push(column.id);
+      acc.optionName.push(column.name);
+      return acc;
+    },
+    { optionID: [], optionName: [] }
+  );
+
+  const activeColumnIndex =
+    columnsInfo.optionID.findIndex((option) => option === taskData?.columnID) >=
+    0
+      ? columnsInfo.optionID.findIndex(
+          (option) => option === taskData?.columnID
+        )
+      : 0;
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    let taskTitle;
+    let taskDescription;
+    let taskColumnID;
+    let taskColumnName;
+    const taskSubtasks = [];
+    const emptyInputs: string[] = [];
+    for (const [key, value] of formData.entries()) {
+      if (String(value).trim() === "" && key !== "description") {
+        emptyInputs.push(key);
+      }
+      if (key === "title") {
+        taskTitle = value;
+      }
+      if (key === "description") {
+        taskDescription = value;
+      }
+      if (key === "optionID") {
+        taskColumnID = value;
+      }
+      if (key === "optionName") {
+        taskColumnName = value;
+      }
+      if (key.startsWith("subtask")) {
+        taskSubtasks.push({
+          id: "subtask-" + uuidv4(),
+          title: value,
+          isCompleted: false,
+        });
+      }
+
+      if (emptyInputs.length > 0) {
+        setEmptyInputs(emptyInputs);
+        return;
+      }
+    }
+
+    if (taskData) {
+      dispatchData({
+        type: "edit task",
+        activeBoard: activeBoard,
+        id: taskData.id,
+        title: taskTitle,
+        description: taskDescription,
+        status: taskColumnName,
+        subtasks: taskSubtasks,
+        columnID: taskData.columnID,
+        newColumnID: taskColumnID,
+      });
+    } else {
+      const newId = "task-" + uuidv4();
+      dispatchData({
+        type: "add task",
+        activeBoard: activeBoard,
+        id: newId,
+        title: taskTitle,
+        description: taskDescription,
+        status: taskColumnName,
+        subtasks: taskSubtasks,
+        columnID: taskColumnID,
+      });
+    }
+
+    dispatchAction({ type: "" });
   }
 
   return (
-    <form
-      className="form add-edit-task"
-      onSubmit={(e) => {
-        e.preventDefault();
-        // console.log(e.target);
-        const formData = new FormData(e.target as HTMLFormElement);
-        for (const [key, value] of formData.entries()) {
-          // console.log(key, value);
-        }
-        // console.log(formData);
-      }}
-    >
+    <form className="form add-edit-task" onSubmit={(e) => handleSubmit(e)}>
       <h2 className="add-edit-task__heading hL">
         {editTask ? "Edit Task" : "Add New Task"}
       </h2>
@@ -47,41 +133,46 @@ export default function AddEditTask({ taskData }: taskProps) {
       >
         <label className="add-edit-task__label pM">Title</label>
         <TextField
-          name={"title"}
-          value={taskData?.title?.toString()}
+          autoFocus={true}
+          inputName={"title"}
+          value={taskData ? taskData.title.toString() : ""}
           placeholder="e.g. Take coffee break"
         />
       </div>
       <div className="add-edit-task__description">
         <label className="add-edit-task__label pM">Description</label>
         <TextField
-          value={taskData?.description?.toString()}
+          inputName="description"
+          value={taskData ? taskData.description.toString() : ""}
           big={true}
           placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
         />
       </div>
       <div className="add-edit-task__subtasks">
-        <label className="add-edit-task__label pM">Subtasks</label>
-        {subtasks.map((subtask, i) => (
-          <TextListItem
-            key={i}
-            id={i}
-            value={subtask}
-            placeholder={"e.g. Make coffee"}
-            onClick={handleDeleteSubtask}
-          ></TextListItem>
-        ))}
-        <Button onClick={addNewSubtask} type={"secondary"}>
-          + Add New Subtask
-        </Button>
+        <TextList
+          itemType="subtask"
+          items={
+            taskData
+              ? taskData.subtasks.reduce(
+                  (acc: { id: string; name: string }[], subtask) => {
+                    acc.push({
+                      id: subtask.id,
+                      name: subtask.title,
+                    });
+                    return acc;
+                  },
+                  []
+                )
+              : []
+          }
+        />
       </div>
       <div className="add-edit-task__status">
-        <Select
-          activeOption={0}
-          options={["Todo", "In Progress", "Done"]}
-        ></Select>
+        <Select activeOption={activeColumnIndex} options={columnsInfo}></Select>
       </div>
-      <Button type={"primary-S"}>Save Changes</Button>
+      <Button btnAction="submit" type={"primary-S"}>
+        {taskData ? "Save Changes" : "Create Task"}
+      </Button>
     </form>
   );
 }

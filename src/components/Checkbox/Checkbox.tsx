@@ -3,17 +3,27 @@ import { useState } from "react";
 
 type Props = {
   children: string;
+  subtaskID: string;
+  done: boolean;
+  onCheck: (subtaskID: string, completed: boolean) => void;
 };
 
-export default function Checkbox({ children }: Props) {
-  const [checked, setChecked] = useState(false);
+export default function Checkbox({
+  children,
+  subtaskID,
+  done,
+  onCheck,
+}: Props) {
+  const [checked, setChecked] = useState(done);
 
   const handleChange = () => {
+    onCheck(subtaskID, !checked);
     setChecked(!checked);
   };
   return (
     <div onClick={handleChange} className="checkbox">
       <input
+        name={subtaskID}
         onChange={handleChange}
         checked={checked}
         className="checkbox__input"

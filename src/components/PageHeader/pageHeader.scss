@@ -62,3 +62,29 @@
     }
   }
 }
+
+@media screen and (max-width: 1400px) {
+  .page-header {
+    height: 8.1rem;
+    &__icon-container {
+      padding: 2.8rem 2.347rem 2.678rem 2.4rem;
+    }
+    &__content {
+      padding: 1.6rem 2.438rem 1.6rem 2.4rem;
+    }
+    &__heading {
+      padding-top: 1.2rem;
+    }
+  }
+  .opened {
+    .page-header {
+      &__icon-container {
+        padding: 3.248rem 8.147rem 2.3rem 2.6rem;
+        width: 26rem;
+        border-bottom: unset;
+      }
+    }
+  }
+}
+
+//3.248rem 8.147rem 2.3rem 2.6rem

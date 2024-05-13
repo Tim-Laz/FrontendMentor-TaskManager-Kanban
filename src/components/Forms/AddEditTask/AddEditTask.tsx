@@ -62,10 +62,10 @@ export default function AddEditTask({ taskData }: taskProps) {
     let taskColumnID;
     let taskColumnName;
     const taskSubtasks = [];
-    const emptyInputs: string[] = [];
+    const emptyInputsForm: string[] = [];
     for (const [key, value] of formData.entries()) {
       if (String(value).trim() === "" && key !== "description") {
-        emptyInputs.push(key);
+        emptyInputsForm.push(key);
       }
       if (key === "title") {
         taskTitle = value;
@@ -86,11 +86,11 @@ export default function AddEditTask({ taskData }: taskProps) {
           isCompleted: false,
         });
       }
+    }
 
-      if (emptyInputs.length > 0) {
-        setEmptyInputs(emptyInputs);
-        return;
-      }
+    if (emptyInputsForm.length > 0) {
+      setEmptyInputs(emptyInputsForm);
+      return;
     }
 
     if (taskData) {
@@ -137,6 +137,7 @@ export default function AddEditTask({ taskData }: taskProps) {
           inputName={"title"}
           value={taskData ? taskData.title.toString() : ""}
           placeholder="e.g. Take coffee break"
+          error={emptyInputs.includes("title")}
         />
       </div>
       <div className="add-edit-task__description">
@@ -150,6 +151,7 @@ export default function AddEditTask({ taskData }: taskProps) {
       </div>
       <div className="add-edit-task__subtasks">
         <TextList
+          emptyInputs={emptyInputs}
           itemType="subtask"
           items={
             taskData

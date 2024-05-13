@@ -11,6 +11,7 @@
   transition: all 0.5s;
   border-radius: 20px;
   cursor: pointer;
+  // flex-shrink: 0;
 
   font-weight: 700;
   font-size: 1.3rem;
@@ -38,6 +39,7 @@
 }
 .btn-primary-S {
   @include btn-primary(4rem);
+  flex-shrink: 0;
 }
 .btn-primary-S:hover {
   @include btn-primary-hover();

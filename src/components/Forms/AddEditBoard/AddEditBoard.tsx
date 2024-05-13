@@ -38,9 +38,6 @@ export default function AddEditBoard({ boardData }: Props) {
       }
     }
 
-    console.log(emptyInputs);
-    console.log(boardName, columns);
-
     if (emptyInputs.length > 0) {
       setEmptyInputs(emptyInputs);
       return;

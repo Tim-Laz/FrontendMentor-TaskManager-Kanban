@@ -19,6 +19,18 @@ export default function BoardView() {
   )[0]?.columns;
   const dispatchAction = useActionDispatch();
   const dispatchTask = useTaskDispatch();
+  const colors = [
+    "#49C4E5",
+    "#8471F2",
+    "#67E2AE",
+    "#74D1EA",
+    "#A8DAB5",
+    "#DCECCB",
+    "#F2E9E2",
+    "#F7CAC9",
+    "#92A8D1",
+    "#88B04B",
+  ];
 
   type Task = {
     id: string;
@@ -52,10 +64,11 @@ export default function BoardView() {
   }
 
   const columns =
-    dataActiveBoard?.map((column) => {
+    dataActiveBoard?.map((column, i) => {
       return (
         <TaskColumn
           key={column.id}
+          color={i < 10 ? colors[i] : colors[i % 10]}
           title={column.name}
           tasksCount={column.tasks.length}
         >

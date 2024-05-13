@@ -12,3 +12,12 @@
     flex-direction: column;
   }
 }
+
+@media screen and (max-width: 1400px) {
+  .nav-board {
+    width: 24rem;
+    &__title {
+      margin-left: 2.4rem;
+    }
+  }
+}

@@ -1,7 +1,9 @@
+@use "../../../colors.scss";
 .add-edit-board {
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
+
   &__heading {
     color: var(--paragraph);
   }
@@ -10,8 +12,5 @@
     color: var(--heading-s);
     display: block;
     margin-bottom: 0.8rem;
-  }
-
-  &__columns {
   }
 }

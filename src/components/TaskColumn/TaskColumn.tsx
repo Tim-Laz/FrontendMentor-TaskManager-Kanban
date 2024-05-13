@@ -4,13 +4,24 @@ type Props = {
   children: React.ReactNode;
   title: string;
   tasksCount: number;
+  color: string;
 };
 
-export default function TaskColumn({ children, title, tasksCount }: Props) {
+export default function TaskColumn({
+  children,
+  title,
+  tasksCount,
+  color,
+}: Props) {
   return (
     <div className="task-column">
       <div className="task-column__header">
-        <div className="task-column__color"></div>
+        <div
+          className="task-column__color"
+          style={{
+            backgroundColor: color,
+          }}
+        ></div>
         <p className="task-column__title hS">
           {title + " (" + tasksCount + ")"}
         </p>

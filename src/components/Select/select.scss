@@ -113,7 +113,7 @@
   }
   &__dropdown::-webkit-scrollbar-track {
     background: var(--dropdown-bg);
-    border-radius: 25px;
+    border-radius: 50%;
   }
 
   &__dropdown::-webkit-scrollbar-thumb {

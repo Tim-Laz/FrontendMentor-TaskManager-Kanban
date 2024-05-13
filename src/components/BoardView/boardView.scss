@@ -9,7 +9,7 @@
   gap: 2.4rem;
   overflow-y: hidden;
   overflow-x: auto; //???
-
+  // scrollbar-gutter: stable both-edges;
   &__new-column {
     flex-shrink: 0;
     border: none;
@@ -50,5 +50,23 @@
 
   &__btn-container {
     width: 17.4rem;
+  }
+}
+
+.board-view::-webkit-scrollbar {
+  height: 10px;
+  color: colors.$main-purple;
+}
+.board-view::-webkit-scrollbar-track {
+  background: var(--main-color);
+}
+.board-view::-webkit-scrollbar-thumb {
+  background: colors.$main-purple;
+}
+
+@media screen and (max-width: 1400px) {
+  .board-view {
+    padding-top: 2.3rem;
+    padding-bottom: 6.7rem;
   }
 }

@@ -121,3 +121,13 @@
     border-radius: 25px;
   }
 }
+
+@media screen and (max-width: 750px) {
+  .select {
+    &__menu-btn.header {
+      img {
+        height: 1.6rem;
+      }
+    }
+  }
+}

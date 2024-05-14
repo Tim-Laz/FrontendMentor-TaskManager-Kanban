@@ -12,10 +12,19 @@ import {
 
 type Props = {
   sidebar: boolean;
+  mobileNav: boolean;
   handleHide: () => void;
+  handleMobileHide: (visible: boolean) => void;
+  width: number;
 };
 
-export default function NavBar({ sidebar, handleHide }: Props) {
+export default function NavBar({
+  sidebar,
+  mobileNav,
+  handleHide,
+  handleMobileHide,
+  width,
+}: Props) {
   const data = useData();
 
   const dispatchAction = useActionDispatch();
@@ -23,11 +32,15 @@ export default function NavBar({ sidebar, handleHide }: Props) {
   const activeBoard = useActive();
   function handleActiveBoard(boardID) {
     dispatchActive({ type: "change active board", boardID: boardID });
+    handleMobileHide(false);
   }
 
   function handleCreateBoard() {
     dispatchAction({ type: "adding board" });
+    handleMobileHide(false);
   }
+
+  const breakpoint = 750;
 
   const Boards = data.boards?.map((board) => (
     <NavBoardItem
@@ -39,7 +52,14 @@ export default function NavBar({ sidebar, handleHide }: Props) {
     </NavBoardItem>
   ));
   return (
-    <aside className={"nav-bar" + (sidebar ? "" : " hidden")}>
+    <aside
+      className={
+        "nav-bar" +
+        ((sidebar && width > breakpoint) || (mobileNav && width <= breakpoint)
+          ? ""
+          : " hidden")
+      }
+    >
       <NavBoard boardCount={data.boards?.length || 0}>
         {Boards}
         <NavBoardItem onClick={() => handleCreateBoard()} status={"create"}>

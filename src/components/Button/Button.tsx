@@ -3,7 +3,12 @@ import "./button.scss";
 type Props = {
   onClick?: () => void;
   children: React.ReactNode;
-  type: "primary-L" | "primary-S" | "secondary" | "destructive";
+  type:
+    | "primary-L"
+    | "primary-L-header"
+    | "primary-S"
+    | "secondary"
+    | "destructive";
   btnAction?: "button" | "submit";
   disabled?: boolean;
 };

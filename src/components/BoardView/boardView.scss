@@ -68,5 +68,17 @@
   .board-view {
     padding-top: 2.3rem;
     padding-bottom: 6.7rem;
+    &__empty-board {
+      width: 370px;
+    }
+  }
+}
+@media screen and (max-width: 750px) {
+  .board-view {
+    padding: 2.4rem 0rem 0rem 1.6rem;
+    &__empty-board {
+      gap: 2.5rem;
+      width: 300px;
+    }
   }
 }

@@ -25,6 +25,8 @@ export default function App() {
   console.log(data.boards);
 
   const [sidebar, setSidebar] = useState(true);
+  const [mobileNav, setMobileNav] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth);
   const activeBoard = useActive();
 
   const activeBoardName = data.boards?.find(
@@ -35,10 +37,17 @@ export default function App() {
     setSidebar(!sidebar);
   };
 
+  const toggleMobileNav = (visible: boolean) => {
+    visible ? setMobileNav(true) : setMobileNav(false);
+  };
+
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape" && action !== "") {
-        dispatchAction("");
+      if (e.key === "Escape") {
+        setMobileNav(false);
+        if (action !== "") {
+          dispatchAction("");
+        }
       }
     }
     document.addEventListener("keydown", handleKeyDown);
@@ -48,10 +57,30 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [action]);
 
+  const breakpoint = 750;
+  useEffect(() => {
+    const handleResizeWindow = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResizeWindow);
+    return () => {
+      window.removeEventListener("resize", handleResizeWindow);
+    };
+  }, []);
+
   return (
     <>
-      <PageHeader sidebar={sidebar} />
-      <MainPage sidebar={sidebar} handleHide={toggleSidebar} />
+      <PageHeader
+        sidebar={sidebar}
+        mobileNav={mobileNav}
+        handleMobileHide={toggleMobileNav}
+        width={width}
+      />
+      <MainPage
+        sidebar={sidebar}
+        mobileNav={mobileNav}
+        handleHide={toggleSidebar}
+        handleMobileHide={toggleMobileNav}
+        width={width}
+      />
       <HideButton status="show" onClick={toggleSidebar} sidebar={sidebar} />
       {action !== "" && <Overlay onClick={() => dispatchAction("")} />}
       {action === "adding board" && <AddEditBoard />}
@@ -72,6 +101,9 @@ export default function App() {
       {action === "editing task" && <AddEditTask taskData={task} />}
       {action === "deleting task confirmation" && (
         <DeleteTaskBoard type="task" name={task.title} id={task.id} />
+      )}
+      {mobileNav === true && width <= breakpoint && (
+        <Overlay onClick={() => toggleMobileNav(false)} />
       )}
     </>
   );

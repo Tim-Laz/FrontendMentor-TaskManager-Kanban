@@ -95,8 +95,22 @@ body {
   // }
 }
 
-// @media screen and (max-width: 1400px) {
-//   .form {
-//     max-height: calc(100% - 148px);
-//   }
-// }
+@media screen and (max-width: 1400px) {
+  // .form {
+  //   max-height: calc(100% - 148px);
+  // }
+  .hXL {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+}
+@media screen and (max-width: 750px) {
+  .hXL {
+    font-size: 1.8rem;
+    line-height: 2.3rem;
+  }
+  .form {
+    width: 34.3rem;
+    padding: 2.4rem;
+  }
+}

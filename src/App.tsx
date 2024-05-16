@@ -46,7 +46,7 @@ export default function App() {
       if (e.key === "Escape") {
         setMobileNav(false);
         if (action !== "") {
-          dispatchAction("");
+          dispatchAction({ type: "" });
         }
       }
     }
@@ -82,7 +82,9 @@ export default function App() {
         width={width}
       />
       <HideButton status="show" onClick={toggleSidebar} sidebar={sidebar} />
-      {action !== "" && <Overlay onClick={() => dispatchAction("")} />}
+      {action !== "" && (
+        <Overlay onClick={() => dispatchAction({ type: "" })} />
+      )}
       {action === "adding board" && <AddEditBoard />}
       {action === "editing board" && (
         <AddEditBoard

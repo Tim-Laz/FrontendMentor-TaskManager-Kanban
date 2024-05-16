@@ -1,11 +1,32 @@
-import { createContext, useReducer, ReactNode, useContext } from "react";
+import {
+  createContext,
+  useReducer,
+  ReactNode,
+  useContext,
+  Dispatch,
+} from "react";
 import { useData } from "./dataContexReducer";
 
+type activeReducerAction = {
+  type: "change active board";
+  boardID: string;
+};
+
 const ActiveContext: React.Context<string> = createContext("");
-const ActiveDispatchContext: React.Context<any> = createContext({});
+const ActiveDispatchContext: React.Context<Dispatch<activeReducerAction>> =
+  createContext((() => {}) as Dispatch<activeReducerAction>);
 
 type Props = {
   children: ReactNode;
+};
+
+type subtask = {
+  id: string;
+  value: string;
+};
+
+type task = {
+  subtasks?: subtask[];
 };
 
 export function ActiveProvider({ children }: Props) {
@@ -39,12 +60,7 @@ export function useActiveDispatch() {
   return useContext(ActiveDispatchContext);
 }
 
-type ActiveReducerAction = {
-  type: string;
-  boardID: string;
-};
-
-function activeReducer(active: string, action: ActiveReducerAction) {
+function activeReducer(active: string, action: activeReducerAction) {
   switch (action.type) {
     case "change active board":
       localStorage.setItem("activeBoard", action.boardID);

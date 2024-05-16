@@ -1,9 +1,10 @@
 import TaskData from "../../data.json";
 import { useImmerReducer } from "use-immer";
 import { createContext, useContext, ReactNode } from "react";
-import { useActive } from "./activeContextReducer";
 
-const initialData = TaskData;
+const initialData = localStorage.getItem("taskData")
+  ? JSON.parse(localStorage.getItem("taskData") as string)
+  : TaskData;
 // const initialData: any = { boards: [] };
 type Data = typeof initialData;
 
@@ -14,8 +15,14 @@ type Props = {
   children: ReactNode;
 };
 
+function updateLocalStorage(data: Data) {
+  console.log("updated local storage");
+  localStorage.setItem("taskData", JSON.stringify(data));
+}
+
 export function DataProvider({ children }: Props) {
   const [data, dispatch] = useImmerReducer(dataReducer, initialData);
+  updateLocalStorage(data);
   return (
     <DataContext.Provider value={data}>
       <DataDispatchContext.Provider value={dispatch}>
@@ -199,8 +206,30 @@ function dataReducer(draft: Data, action: Record<string, any>) {
 
       activeTask.title = action.title;
       activeTask.description = action.description;
-      activeTask.subtasks = action.subtasks;
       activeTask.status = action.status;
+
+      type subtask = {
+        id: string;
+        title: string;
+        isCompleted: boolean;
+      };
+      const newSubtaks: subtask[] = [];
+      action.subtasks.forEach((newSub: subtask) => {
+        const oldSub = draft.boards[activeBoardIndex].columns[
+          activeColumnIndex
+        ].tasks[activeTaskIndex].subtasks.find((sub) => sub.id === newSub.id);
+        if (oldSub !== undefined) {
+          newSubtaks.push({
+            id: oldSub.id,
+            title: newSub.title,
+            isCompleted: oldSub.isCompleted,
+          });
+        } else {
+          newSubtaks.push(newSub);
+        }
+      });
+
+      activeTask.subtasks = newSubtaks;
 
       if (newColumnIndex !== activeColumnIndex) {
         draft.boards[activeBoardIndex].columns[newColumnIndex].tasks.push(

@@ -1,9 +1,10 @@
 import "./select.scss";
 
 import { useState, useRef, useEffect } from "react";
-import { useOutsideClick } from "./useOutsideClick.ts";
-import { useKeyPressEsc } from "./useKeyPressEsc.ts";
+import { useOutsideClick } from "../../CustomHooks/useOutsideClick.ts";
+import { useKeyPressEsc } from "../../CustomHooks/useKeyPressEsc.ts";
 import { useActionDispatch } from "../../Reducers/actionContexReducer.tsx";
+import { autoUpdate, useFloating } from "@floating-ui/react";
 
 type optionsData = {
   optionID: string[];
@@ -29,6 +30,8 @@ type optionProps = {
 
 type dropdownProps = {
   children: React.ReactNode;
+  refs: any;
+  styles: any;
 };
 
 function Option({
@@ -39,8 +42,67 @@ function Option({
   onClick,
   onMouseEnter,
 }: optionProps) {
+  const activeOption = useRef<HTMLLIElement>(null);
+
+  //Scroll to active option
+  useEffect(() => {
+    const options = {
+      threshold: 1,
+    };
+
+    const target = activeOption.current;
+
+    const callback = (
+      entries: IntersectionObserverEntry[],
+      observer: IntersectionObserver
+    ) => {
+      if (!entries[0].isIntersecting) {
+        target?.scrollIntoView();
+      }
+      observer.unobserve(target as Element);
+    };
+
+    const observer = new IntersectionObserver(callback, options);
+
+    if (isActive) {
+      observer.observe(target as Element);
+    }
+
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  //Scroll to hover option
+  useEffect(() => {
+    const options = {
+      threshold: 0.1,
+    };
+
+    const target = activeOption.current;
+
+    const callback = (
+      entries: IntersectionObserverEntry[],
+      observer: IntersectionObserver
+    ) => {
+      if (!entries[0].isIntersecting) {
+        target?.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+
+    const observer = new IntersectionObserver(callback, options);
+
+    if (isHover) {
+      observer.observe(target as Element);
+    }
+
+    return () => {
+      observer.unobserve(target as Element);
+    };
+  }, [isHover]);
+
   return (
     <li
+      ref={activeOption}
       onClick={() => onClick(i)}
       onMouseEnter={() => onMouseEnter(i)}
       className={
@@ -55,9 +117,14 @@ function Option({
   );
 }
 
-function DropDown({ children }: dropdownProps) {
+function DropDown({ children, refs, styles }: dropdownProps) {
   return (
-    <ul className="select__dropdown" role="listbox">
+    <ul
+      ref={refs.setFloating}
+      style={styles}
+      className="select__dropdown"
+      role="listbox"
+    >
       {children}
     </ul>
   );
@@ -76,6 +143,9 @@ export default function Select({
     activeOption !== undefined ? activeOption : -1
   );
   const [hoverIndex, setHoverIndex] = useState<number | undefined>(undefined);
+  const { refs, floatingStyles } = useFloating({
+    whileElementsMounted: autoUpdate,
+  });
 
   const optionsSelect = Array.isArray(options) ? options : options.optionName;
 
@@ -85,7 +155,7 @@ export default function Select({
 
   useOutsideClick(selectElRef, closeDropDown);
 
-  useKeyPressEsc(closeDropDown);
+  useKeyPressEsc(selectElRef, closeDropDown);
 
   const actionDispatch = useActionDispatch();
 
@@ -175,7 +245,7 @@ export default function Select({
 
   const list = optionsSelect.map((status, i) => (
     <Option
-      key={status}
+      key={i}
       status={status}
       i={i}
       isActive={i === activeIndex && !header ? true : false}
@@ -186,7 +256,8 @@ export default function Select({
   ));
   return (
     <div
-      ref={selectElRef}
+      // ref={selectElRef}
+      ref={refs.setReference}
       onKeyDown={(e) => handleKeyDown(e)}
       className="select"
     >
@@ -206,6 +277,7 @@ export default function Select({
       ></input>
       {menu ? (
         <button
+          // ref={refs.setReference}
           type="button"
           disabled={disabled}
           className={
@@ -235,7 +307,11 @@ export default function Select({
         </button>
       )}
 
-      {visible && <DropDown>{list}</DropDown>}
+      {visible && (
+        <DropDown refs={refs} styles={floatingStyles}>
+          {list}
+        </DropDown>
+      )}
     </div>
   );
 }

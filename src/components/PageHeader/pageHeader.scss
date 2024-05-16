@@ -15,7 +15,7 @@
     height: 100%;
     border-right: 1px solid var(--lines);
     border-bottom: 1px solid var(--lines);
-    transition: width 0.3s;
+    transition: all 0.3s, border 0s;
   }
 
   &__icon {
@@ -67,7 +67,7 @@
 .opened {
   .page-header {
     &__icon-container {
-      padding: 3.5rem 11.347rem 3.678rem 3.4rem;
+      padding: 3.278rem 11.347rem 3.9rem 3.4rem;
       width: 30rem;
       border-bottom: unset;
     }
@@ -84,13 +84,13 @@
       padding: 1.6rem 1.438rem 1.6rem 2.4rem;
     }
     &__heading {
-      padding-top: 1.2rem;
+      padding-top: unset;
     }
   }
   .opened {
     .page-header {
       &__icon-container {
-        padding: 3.248rem 8.147rem 2.3rem 2.6rem;
+        padding: 3.278rem 8.147rem 2.3rem 2.6rem;
         width: 26rem;
         border-bottom: unset;
       }
@@ -155,5 +155,3 @@
     }
   }
 }
-
-//3.248rem 8.147rem 2.3rem 2.6rem

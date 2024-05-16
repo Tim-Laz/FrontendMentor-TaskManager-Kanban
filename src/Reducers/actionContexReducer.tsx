@@ -1,13 +1,30 @@
-import React, { useReducer, createContext, useContext, ReactNode } from "react";
+import React, {
+  useReducer,
+  createContext,
+  useContext,
+  ReactNode,
+  Dispatch,
+} from "react";
 
 const initialData = "";
 
-const ActionContext: React.Context<string> = createContext("");
-const ActionDispatchContext: React.Context<any> = createContext({}); // todo
+type actionType =
+  | "adding board"
+  | "editing board"
+  | "deleting board confirmation"
+  | "adding new task"
+  | "viewing task"
+  | "editing task"
+  | "deleting task confirmation"
+  | "";
 
 type Props = {
   children: ReactNode;
 };
+
+const ActionContext: React.Context<string> = createContext("");
+const ActionDispatchContext: React.Context<Dispatch<{ type: actionType }>> =
+  createContext((() => {}) as Dispatch<{ type: actionType }>);
 
 export function ActionProvider({ children }: Props) {
   const [action, dispatch] = useReducer(actionReducer, initialData);
@@ -28,7 +45,7 @@ export function useActionDispatch() {
   return useContext(ActionDispatchContext);
 }
 
-function actionReducer(data: string, action: Record<string, string>) {
+function actionReducer(data: string, action: { type: actionType }) {
   switch (action.type) {
     case "adding board": {
       return "adding board";

@@ -3,7 +3,6 @@
 .checkbox {
   display: flex;
   align-items: center;
-  height: 4rem;
   width: 100%;
   padding: 1.2rem;
   background-color: var(--color-background);
@@ -53,4 +52,10 @@
 
 .checkbox:hover {
   background-color: colors.$main-purple-light;
+}
+
+@media screen and (max-width: 750px) {
+  .checkbox {
+    padding-right: 0.8rem;
+  }
 }

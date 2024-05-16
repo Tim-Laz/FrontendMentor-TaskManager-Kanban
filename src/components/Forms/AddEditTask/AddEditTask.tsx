@@ -81,7 +81,7 @@ export default function AddEditTask({ taskData }: taskProps) {
       }
       if (key.startsWith("subtask")) {
         taskSubtasks.push({
-          id: "subtask-" + uuidv4(),
+          id: key,
           title: value,
           isCompleted: false,
         });

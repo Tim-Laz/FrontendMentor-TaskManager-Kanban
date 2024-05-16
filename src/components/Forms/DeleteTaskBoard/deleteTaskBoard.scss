@@ -16,3 +16,11 @@
     gap: 1.6rem;
   }
 }
+
+@media screen and (max-width: 750px) {
+  .delete-task-board {
+    &__btns {
+      flex-direction: column;
+    }
+  }
+}

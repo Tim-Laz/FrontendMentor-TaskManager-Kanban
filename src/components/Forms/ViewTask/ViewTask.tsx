@@ -17,15 +17,6 @@ type Props = {
 };
 
 export default function ViewTask({ taskData }: Props) {
-  // const subtaskIDs = taskData.subtasks.reduce((acc, subtask) => {
-  //   acc.push(subtask.id);
-  //   return acc;
-  // }, []);
-  // const subtaskTitles = taskData.subtasks.reduce((acc, subtask) => {
-  //   acc.push(subtask.title);
-  //   return acc;
-  // }, []);
-
   const activeBoard = useActive();
   const data = useData();
   const dispatchData = useDataDispatch();
@@ -34,7 +25,7 @@ export default function ViewTask({ taskData }: Props) {
     (board) => board.id === activeBoard
   );
   const columnsInfo = data.boards[activeBoardIndex].columns.reduce(
-    (acc, column) => {
+    (acc: { optionID: string[]; optionName: string[] }, column) => {
       acc.optionID.push(column.id);
       acc.optionName.push(column.name);
       return acc;

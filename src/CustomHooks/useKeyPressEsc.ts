@@ -5,11 +5,13 @@ export function useKeyPressEsc(
   callback: () => void
 ) {
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.stopPropagation();
+    const handleKeyDown = (event: Event) => {
+      const unknownEvent = event as unknown;
+      const keyboardEvent = unknownEvent as KeyboardEvent;
+      if (keyboardEvent.key === "Escape") {
+        keyboardEvent.stopPropagation();
         //removes focus from the current element so next esc press will close the next parent element
-        (<HTMLElement>event.target)?.blur();
+        (<HTMLElement>keyboardEvent.target)?.blur();
         callback();
       }
     };

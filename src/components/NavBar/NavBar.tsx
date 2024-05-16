@@ -30,7 +30,7 @@ export default function NavBar({
   const dispatchAction = useActionDispatch();
   const dispatchActive = useActiveDispatch();
   const activeBoard = useActive();
-  function handleActiveBoard(boardID) {
+  function handleActiveBoard(boardID: string) {
     dispatchActive({ type: "change active board", boardID: boardID });
     handleMobileHide(false);
   }

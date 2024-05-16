@@ -19,7 +19,6 @@ export default function DeleteTaskBoard({ type, name, id }: Props) {
 
   const data = useData();
   const activeBoard = useActive();
-  console.log(activeBoard);
 
   const dispatchActive = useActiveDispatch();
   function handleDelete(deleteID: string) {

@@ -1,13 +1,46 @@
-import { ReactNode, createContext, useContext, useReducer } from "react";
-
-const initialData = {};
-
-const TaskContext: React.Context<any> = createContext({});
-const TaskDispatchContext: React.Context<any> = createContext({});
+import {
+  Dispatch,
+  ReactNode,
+  createContext,
+  useContext,
+  useReducer,
+} from "react";
+import { TaskType } from "./dataContexReducer";
 
 type Props = {
   children: ReactNode;
 };
+
+type TaskWithColumn = {
+  columnID: string;
+} & TaskType;
+
+type SetTask = {
+  type: "set task";
+  taskData: TaskWithColumn;
+};
+type CheckSubtask = {
+  type: "check subtask";
+  subtaskID: string;
+  completed: boolean;
+};
+
+type ChangeStatus = {
+  type: "change status";
+  columnID: string;
+  status: string;
+};
+
+type TaskAction = SetTask | CheckSubtask | ChangeStatus;
+
+const initialData = {} as TaskWithColumn;
+
+const TaskContext: React.Context<TaskWithColumn> = createContext(
+  {} as TaskWithColumn
+);
+const TaskDispatchContext: React.Context<Dispatch<TaskAction>> = createContext(
+  (() => {}) as Dispatch<TaskAction>
+);
 
 export function TaskProvider({ children }: Props) {
   const [task, dispatch] = useReducer(taskReducer, initialData);
@@ -28,7 +61,7 @@ export function useTaskDispatch() {
   return useContext(TaskDispatchContext);
 }
 
-function taskReducer(task, action) {
+function taskReducer(task: TaskWithColumn, action: TaskAction) {
   switch (action.type) {
     case "set task": {
       return action.taskData;

@@ -1,10 +1,19 @@
 import "./select.scss";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, MutableRefObject } from "react";
 import { useOutsideClick } from "../../CustomHooks/useOutsideClick.ts";
 import { useKeyPressEsc } from "../../CustomHooks/useKeyPressEsc.ts";
 import { useActionDispatch } from "../../Reducers/actionContexReducer.tsx";
-import { autoUpdate, useFloating } from "@floating-ui/react";
+import {
+  autoUpdate,
+  useFloating,
+  FloatingPortal,
+  useDismiss,
+  useInteractions,
+  shift,
+  flip,
+  offset,
+} from "@floating-ui/react";
 
 type optionsData = {
   optionID: string[];
@@ -30,8 +39,11 @@ type optionProps = {
 
 type dropdownProps = {
   children: React.ReactNode;
-  refs: any;
+  menu: boolean;
+  header: boolean;
+  setFloating: any;
   styles: any;
+  getFloatingProps: any;
 };
 
 function Option({
@@ -117,12 +129,22 @@ function Option({
   );
 }
 
-function DropDown({ children, refs, styles }: dropdownProps) {
+function DropDown({
+  children,
+  menu,
+  header,
+  setFloating,
+  styles,
+  getFloatingProps,
+}: dropdownProps) {
   return (
     <ul
-      ref={refs.setFloating}
+      ref={setFloating}
       style={styles}
-      className="select__dropdown"
+      {...getFloatingProps()}
+      className={
+        "select__dropdown" + (menu ? " menu" : "") + (header ? " header" : "")
+      }
       role="listbox"
     >
       {children}
@@ -143,21 +165,46 @@ export default function Select({
     activeOption !== undefined ? activeOption : -1
   );
   const [hoverIndex, setHoverIndex] = useState<number | undefined>(undefined);
-  const { refs, floatingStyles } = useFloating({
-    whileElementsMounted: autoUpdate,
-  });
 
   const optionsSelect = Array.isArray(options) ? options : options.optionName;
 
   const activeStatus = optionsSelect[activeIndex];
-
-  const selectElRef = useRef(null);
-
-  useOutsideClick(selectElRef, closeDropDown);
-
-  useKeyPressEsc(selectElRef, closeDropDown);
-
   const actionDispatch = useActionDispatch();
+
+  // const selectElRef = useRef(null);
+
+  //Floating UI library for positioning, portal and closing on scroll
+
+  const placementPos = header ? "bottom-end" : "bottom";
+
+  const { refs, floatingStyles, context } = useFloating<HTMLElement>({
+    middleware: [offset(7), shift(), flip()],
+    placement: placementPos,
+    whileElementsMounted: autoUpdate,
+    open: visible,
+    onOpenChange: setVisible,
+  });
+  const dismiss = useDismiss(context, {
+    escapeKey: false,
+    outsidePress: false,
+    ancestorScroll: true,
+  });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
+
+  //Closing on esc and outside click
+
+  useOutsideClick(
+    refs.reference as MutableRefObject<HTMLElement | null>,
+    closeDropDown
+  );
+
+  useKeyPressEsc(
+    refs.reference as MutableRefObject<HTMLElement | null>,
+    closeDropDown
+  );
+
+  //dispatching on active index change
 
   useEffect(() => {
     if (header && activeIndex === 0) {
@@ -187,12 +234,19 @@ export default function Select({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
 
+  //callbacks
+
   function closeDropDown() {
     setVisible(false);
     setHoverIndex(undefined);
   }
 
   function handleButtonClick() {
+    // if (refs.reference.current !== null) {
+    //   (refs.reference.current as HTMLElement).scrollIntoView({
+    //     behavior: "smooth",
+    //   });
+    // }
     setVisible(!visible);
     if (visible === true) {
       setHoverIndex(undefined);
@@ -204,7 +258,10 @@ export default function Select({
     setVisible(false);
   }
 
+  //up and down keys dropdown navigation
+
   function handleKeyDown(e: React.KeyboardEvent) {
+    e.preventDefault();
     if (e.key === "ArrowDown") {
       if (hoverIndex === undefined) {
         if (activeIndex < optionsSelect.length - 1)
@@ -258,6 +315,7 @@ export default function Select({
     <div
       // ref={selectElRef}
       ref={refs.setReference}
+      {...getReferenceProps()}
       onKeyDown={(e) => handleKeyDown(e)}
       className="select"
     >
@@ -277,7 +335,6 @@ export default function Select({
       ></input>
       {menu ? (
         <button
-          // ref={refs.setReference}
           type="button"
           disabled={disabled}
           className={
@@ -308,9 +365,17 @@ export default function Select({
       )}
 
       {visible && (
-        <DropDown refs={refs} styles={floatingStyles}>
-          {list}
-        </DropDown>
+        <FloatingPortal id="root">
+          <DropDown
+            menu={menu}
+            header={header}
+            setFloating={refs?.setFloating}
+            styles={floatingStyles}
+            getFloatingProps={getFloatingProps}
+          >
+            {list}
+          </DropDown>
+        </FloatingPortal>
       )}
     </div>
   );

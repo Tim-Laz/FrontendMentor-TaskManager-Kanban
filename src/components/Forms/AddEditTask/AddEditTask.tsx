@@ -3,7 +3,6 @@ import "./addEditTask.scss";
 import TextField from "../../TextField/TextField";
 import Select from "../../Select/Select";
 import { useState } from "react";
-import TextListItem from "../../TextListItem/TextListItem";
 import TextList from "../../TextList/TextList";
 import { v4 as uuidv4 } from "uuid";
 import { useData, useDataDispatch } from "../../../Reducers/dataContexReducer";
@@ -22,9 +21,6 @@ type taskProps = {
 };
 
 export default function AddEditTask({ taskData }: taskProps) {
-  const [subtasks, setSubtasks] = useState(
-    Array.isArray(taskData?.subtasks) ? taskData?.subtasks : ["", ""]
-  );
   const [emptyInputs, setEmptyInputs] = useState<string[]>([]);
   const editTask = taskData ? true : false;
 
@@ -82,7 +78,7 @@ export default function AddEditTask({ taskData }: taskProps) {
       if (key.startsWith("subtask")) {
         taskSubtasks.push({
           id: key,
-          title: value,
+          title: String(value),
           isCompleted: false,
         });
       }
@@ -98,12 +94,12 @@ export default function AddEditTask({ taskData }: taskProps) {
         type: "edit task",
         activeBoard: activeBoard,
         id: taskData.id,
-        title: taskTitle,
-        description: taskDescription,
-        status: taskColumnName,
+        title: String(taskTitle),
+        description: String(taskDescription),
+        status: String(taskColumnName),
         subtasks: taskSubtasks,
         columnID: taskData.columnID,
-        newColumnID: taskColumnID,
+        newColumnID: String(taskColumnID),
       });
     } else {
       const newId = "task-" + uuidv4();
@@ -111,11 +107,11 @@ export default function AddEditTask({ taskData }: taskProps) {
         type: "add task",
         activeBoard: activeBoard,
         id: newId,
-        title: taskTitle,
-        description: taskDescription,
-        status: taskColumnName,
+        title: String(taskTitle),
+        description: String(taskDescription),
+        status: String(taskColumnName),
         subtasks: taskSubtasks,
-        columnID: taskColumnID,
+        columnID: String(taskColumnID),
       });
     }
 

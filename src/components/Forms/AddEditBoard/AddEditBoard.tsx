@@ -1,16 +1,18 @@
-import TextListItem from "../../TextListItem/TextListItem";
 import TextField from "../../TextField/TextField";
 import Button from "../../Button/Button";
 import "./addEditBoard.scss";
 import TextList from "../../TextList/TextList";
-import { useDataDispatch } from "../../../Reducers/dataContexReducer";
+import {
+  BoardType,
+  useDataDispatch,
+} from "../../../Reducers/dataContexReducer";
 import { v4 as uuidv4 } from "uuid";
 import { useActionDispatch } from "../../../Reducers/actionContexReducer";
 import { useActiveDispatch } from "../../../Reducers/activeContextReducer";
 import { useState } from "react";
 
 type Props = {
-  boardData?: any;
+  boardData?: BoardType;
 };
 
 export default function AddEditBoard({ boardData }: Props) {
@@ -34,7 +36,7 @@ export default function AddEditBoard({ boardData }: Props) {
         boardName = value;
       }
       if (key.startsWith("column")) {
-        columns.push({ id: key, name: value, tasks: [] });
+        columns.push({ id: key, name: String(value), tasks: [] });
       }
     }
 
@@ -47,7 +49,7 @@ export default function AddEditBoard({ boardData }: Props) {
       dispatchData({
         type: "edit board",
         id: boardData.id,
-        name: boardName,
+        name: String(boardName),
         columns: columns,
       });
     } else {
@@ -55,7 +57,7 @@ export default function AddEditBoard({ boardData }: Props) {
       dispatchData({
         type: "add board",
         id: newId,
-        name: boardName,
+        name: String(boardName),
         columns: columns,
       });
       dispatchActive({

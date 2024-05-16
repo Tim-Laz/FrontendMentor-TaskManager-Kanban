@@ -7,6 +7,10 @@ import {
 } from "react";
 import { useData } from "./dataContexReducer";
 
+type Props = {
+  children: ReactNode;
+};
+
 type activeReducerAction = {
   type: "change active board";
   boardID: string;
@@ -15,19 +19,6 @@ type activeReducerAction = {
 const ActiveContext: React.Context<string> = createContext("");
 const ActiveDispatchContext: React.Context<Dispatch<activeReducerAction>> =
   createContext((() => {}) as Dispatch<activeReducerAction>);
-
-type Props = {
-  children: ReactNode;
-};
-
-type subtask = {
-  id: string;
-  value: string;
-};
-
-type task = {
-  subtasks?: subtask[];
-};
 
 export function ActiveProvider({ children }: Props) {
   const data = useData();
@@ -42,7 +33,7 @@ export function ActiveProvider({ children }: Props) {
       ? data.boards[0].id
       : "";
 
-  const [active, dispatch] = useReducer(activeReducer, initialActive);
+  const [active, dispatch] = useReducer(activeReducer, initialActive || "");
 
   return (
     <ActiveContext.Provider value={active}>

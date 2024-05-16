@@ -1,22 +1,119 @@
 import TaskData from "../../data.json";
 import { useImmerReducer } from "use-immer";
-import { createContext, useContext, ReactNode } from "react";
-
-const initialData = localStorage.getItem("taskData")
-  ? JSON.parse(localStorage.getItem("taskData") as string)
-  : TaskData;
-// const initialData: any = { boards: [] };
-type Data = typeof initialData;
-
-const DataContext: React.Context<Data> = createContext({} as Data);
-const DataDispatchContext: React.Context<any> = createContext({});
+import { createContext, useContext, ReactNode, Dispatch } from "react";
 
 type Props = {
   children: ReactNode;
 };
 
-function updateLocalStorage(data: Data) {
-  console.log("updated local storage");
+export type SubtaskType = {
+  id: string;
+  title: string;
+  isCompleted: boolean;
+};
+
+export type TaskType = {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  subtasks: SubtaskType[];
+};
+
+type ColumnType = {
+  id: string;
+  name: string;
+  tasks: TaskType[];
+};
+
+export type BoardType = {
+  id: string;
+  name: string;
+  columns: ColumnType[];
+};
+
+type DataType = {
+  boards: BoardType[];
+};
+
+type ActionBoard = {
+  id: string;
+  name: string;
+  columns: ColumnType[];
+};
+
+type AddBoard = {
+  type: "add board";
+} & ActionBoard;
+
+type EditBoard = {
+  type: "edit board";
+} & ActionBoard;
+
+type DeleteBoard = {
+  type: "delete board";
+  id: string;
+};
+
+type ActionTask = {
+  activeBoard: string;
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  subtasks: SubtaskType[];
+  columnID: string;
+};
+
+type AddTask = {
+  type: "add task";
+} & ActionTask;
+
+type EditTask = {
+  type: "edit task";
+  newColumnID: string;
+} & ActionTask;
+type DeleteTask = {
+  type: "delete task";
+  id: string;
+  boardID: string;
+};
+
+type ActionViewTask = {
+  taskID: string;
+  activeBoard: string;
+  columnID: string;
+};
+type ChangeTaskStatus = {
+  type: "change task status";
+  newColumnID: string;
+  status: string;
+} & ActionViewTask;
+type CheckSubtask = {
+  type: "check subtask";
+  subtaskID: string;
+} & ActionViewTask;
+
+type DataAction =
+  | AddBoard
+  | EditBoard
+  | DeleteBoard
+  | AddTask
+  | EditTask
+  | DeleteTask
+  | ChangeTaskStatus
+  | CheckSubtask;
+
+const initialData: DataType = localStorage.getItem("taskData")
+  ? JSON.parse(localStorage.getItem("taskData") as string)
+  : TaskData;
+
+const DataContext: React.Context<DataType> = createContext({} as DataType);
+const DataDispatchContext: React.Context<Dispatch<DataAction>> = createContext(
+  (() => {}) as Dispatch<DataAction>
+);
+
+function updateLocalStorage(data: DataType) {
   localStorage.setItem("taskData", JSON.stringify(data));
 }
 
@@ -39,7 +136,7 @@ export function useDataDispatch() {
   return useContext(DataDispatchContext);
 }
 
-function dataReducer(draft: Data, action: Record<string, any>) {
+function dataReducer(draft: DataType, action: DataAction) {
   switch (action.type) {
     case "add board": {
       draft.boards.push({
@@ -54,13 +151,9 @@ function dataReducer(draft: Data, action: Record<string, any>) {
         (board) => board.id === action.id
       );
       draft.boards[editIndex].name = action.name;
-      type column = {
-        id: string;
-        name: string;
-        tasks: any[];
-      };
-      const newColumns: column[] = [];
-      action.columns.forEach((newCol: column) => {
+
+      const newColumns: ColumnType[] = [];
+      action.columns.forEach((newCol: ColumnType) => {
         const oldCol = draft.boards[editIndex].columns.find(
           (col) => col.id === newCol.id
         );
@@ -208,13 +301,8 @@ function dataReducer(draft: Data, action: Record<string, any>) {
       activeTask.description = action.description;
       activeTask.status = action.status;
 
-      type subtask = {
-        id: string;
-        title: string;
-        isCompleted: boolean;
-      };
-      const newSubtaks: subtask[] = [];
-      action.subtasks.forEach((newSub: subtask) => {
+      const newSubtaks: SubtaskType[] = [];
+      action.subtasks.forEach((newSub: SubtaskType) => {
         const oldSub = draft.boards[activeBoardIndex].columns[
           activeColumnIndex
         ].tasks[activeTaskIndex].subtasks.find((sub) => sub.id === newSub.id);

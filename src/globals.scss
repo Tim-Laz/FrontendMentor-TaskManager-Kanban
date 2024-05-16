@@ -78,27 +78,24 @@ body {
   background-color: var(--main-color);
   padding: 3.2rem 2.5rem 3.2rem 3.2rem;
   border-radius: 6px;
-  // max-height: 100%;
-  // overflow-y: auto;
-  // scrollbar-gutter: stable;
-  // &::-webkit-scrollbar {
-  //   width: 7px;
-  // }
-  // &::-webkit-scrollbar-track {
-  //   background: var(--main-color);
-  //   border-radius: 50%;
-  // }
+  max-height: calc(90%);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--main-color);
+    border-radius: 50%;
+  }
 
-  // &::-webkit-scrollbar-thumb {
-  //   background: colors.$medium-grey;
-  //   border-radius: 25px;
-  // }
+  &::-webkit-scrollbar-thumb {
+    background: colors.$medium-grey;
+    border-radius: 25px;
+  }
 }
 
 @media screen and (max-width: 1400px) {
-  // .form {
-  //   max-height: calc(100% - 148px);
-  // }
   .hXL {
     font-size: 2rem;
     line-height: 2.5rem;

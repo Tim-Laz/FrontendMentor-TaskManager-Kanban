@@ -1,8 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import PageHeader from "./components/PageHeader/PageHeader.tsx";
 import MainPage from "./components/MainPage/MainPage.tsx";
 import HideButton from "./components/HideButton/HideButton.tsx";
-import { useData, useDataDispatch } from "./Reducers/dataContexReducer.tsx";
+import { useData } from "./Reducers/dataContexReducer.tsx";
 
 import { useEffect, useState } from "react";
 import AddEditTask from "./components/Forms/AddEditTask/AddEditTask.tsx";
@@ -22,16 +21,14 @@ export default function App() {
   const action = useAction();
   const dispatchAction = useActionDispatch();
   const task = useTask();
-  console.log(data.boards);
+  const activeBoard = useActive();
+  const activeBoardName = data.boards?.find(
+    (board) => board.id === activeBoard
+  )?.name;
 
   const [sidebar, setSidebar] = useState(true);
   const [mobileNav, setMobileNav] = useState(false);
   const [width, setWidth] = useState(window.innerWidth);
-  const activeBoard = useActive();
-
-  const activeBoardName = data.boards?.find(
-    (board) => board.id === activeBoard
-  )?.name;
 
   const toggleSidebar = () => {
     setSidebar(!sidebar);
@@ -58,6 +55,7 @@ export default function App() {
   }, [action]);
 
   const breakpoint = 750;
+
   useEffect(() => {
     const handleResizeWindow = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handleResizeWindow);

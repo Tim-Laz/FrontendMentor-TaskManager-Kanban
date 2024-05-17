@@ -1,0 +1,19 @@
+@use "../../../colors.scss";
+
+.main-page {
+  display: flex;
+  height: calc(100% - 9.7rem);
+}
+
+@media screen and (max-width: 1400px) {
+  .main-page {
+    display: flex;
+    height: calc(100% - 8.1rem);
+  }
+}
+@media screen and (max-width: 750px) {
+  .main-page {
+    position: relative;
+    height: calc(100% - 6.4rem);
+  }
+}

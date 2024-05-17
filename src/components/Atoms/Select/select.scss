@@ -1,0 +1,130 @@
+@use "../../../colors.scss";
+
+.select {
+  position: relative;
+  width: 100%;
+  color: var(--paragraph);
+  z-index: 1;
+  &:has(&__menu-btn) {
+    width: fit-content;
+  }
+
+  &__hiddenInput {
+    display: none;
+  }
+
+  &__menu-btn {
+    padding: 1rem;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__dropdown.menu {
+    width: 19.2rem;
+  }
+
+  &__dropdown.menu > &__option:nth-child(2) {
+    color: colors.$red;
+  }
+
+  &__dropdown.menu > &__option {
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+
+  &__menu-btn.disabled {
+    cursor: unset;
+  }
+
+  &__button {
+    width: 100%;
+    font-family: inherit;
+    background-color: var(--main-color);
+    color: inherit;
+    padding: 0.8rem 1.58rem 0.9rem 1.6rem;
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+  &__button.active {
+    border: 1px solid colors.$main-purple;
+  }
+
+  &__value {
+    text-align: left;
+  }
+
+  &__dropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 42.3rem;
+    background-color: var(--dropdown-bg);
+    border-radius: 8px;
+    padding: 1.2rem;
+    max-height: 11.7rem;
+    overflow-y: auto;
+  }
+
+  &__option {
+    padding: 0.4rem;
+    position: relative;
+    cursor: pointer;
+    color: colors.$medium-grey;
+    transition: background-color 0.3s;
+  }
+
+  &__option.hover {
+    background-color: colors.$main-purple-light;
+  }
+
+  &__option.active {
+    background-color: colors.$main-purple-hover-light;
+  }
+
+  &__option.active.hover {
+    background-color: rgba(169, 164, 255, 0.4);
+  }
+
+  &__option:active,
+  &__option.active:active {
+    background-color: rgba(169, 164, 255, 0.7);
+  }
+
+  &__dropdown::-webkit-scrollbar {
+    width: 7px;
+  }
+  &__dropdown::-webkit-scrollbar-track {
+    background: var(--dropdown-bg);
+    border-radius: 50%;
+  }
+
+  &__dropdown::-webkit-scrollbar-thumb {
+    background: colors.$medium-grey;
+    border-radius: 25px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .select {
+    &__menu-btn.header {
+      img {
+        height: 1.6rem;
+      }
+    }
+    &__dropdown {
+      width: 29.5rem;
+    }
+  }
+}

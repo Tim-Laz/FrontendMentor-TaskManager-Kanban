@@ -1,0 +1,85 @@
+@use "../../../colors.scss";
+
+.btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  text-decoration: none;
+  font-family: inherit;
+  transition: all 0.5s;
+  border-radius: 20px;
+  cursor: pointer;
+
+  font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 2.3rem;
+}
+
+@mixin btn-primary($height) {
+  color: colors.$white;
+  background-color: colors.$main-purple;
+  height: $height;
+}
+@mixin btn-primary-hover {
+  background-color: colors.$main-purple-hover;
+}
+
+.btn-primary-L,
+.btn-primary-L-header {
+  border-radius: 24px;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.9rem;
+  @include btn-primary(4.8rem);
+}
+.btn-primary-L:hover,
+.btn-primary-L-header:hover {
+  @include btn-primary-hover();
+}
+
+.btn-primary-S {
+  @include btn-primary(4rem);
+  flex-shrink: 0;
+
+  &:hover {
+    @include btn-primary-hover();
+  }
+}
+
+.btn-secondary {
+  color: colors.$main-purple;
+  height: 4rem;
+  background-color: var(--button-secondary);
+
+  &:hover {
+    background-color: var(--button-secondary-hover);
+  }
+}
+
+.btn-destructive {
+  height: 4rem;
+  color: colors.$white;
+  background-color: colors.$red;
+
+  &:hover {
+    background-color: colors.$red-hover;
+  }
+}
+
+.btn.disabled {
+  opacity: 0.25;
+  cursor: unset;
+
+  &:hover {
+    background-color: colors.$main-purple;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .btn-primary-L-header {
+    height: 3.2rem;
+    width: 4.8rem;
+  }
+}

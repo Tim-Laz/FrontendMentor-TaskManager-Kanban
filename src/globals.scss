@@ -10,9 +10,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
-  // background-color: var(--main-color);
-  // scrollbar-gutter: stable both-edges;
-  // padding: 5rem;
 }
 
 #root {
@@ -22,11 +19,9 @@
 a:link,
 a:visited {
   text-decoration: inherit;
-  // color: #ffffff;
 }
 
 body {
-  // color: #ffffff;
   font-weight: 700;
   height: 100vh;
   background-color: var(--color-background);

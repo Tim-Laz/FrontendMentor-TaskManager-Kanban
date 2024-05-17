@@ -1,18 +1,18 @@
-import PageHeader from "./components/PageHeader/PageHeader.tsx";
-import MainPage from "./components/MainPage/MainPage.tsx";
-import HideButton from "./components/HideButton/HideButton.tsx";
+import PageHeader from "./components/Organisms/PageHeader/PageHeader.tsx";
+import MainPage from "./components/Templates/MainPage/MainPage.tsx";
+import HideButton from "./components/Atoms/HideButton/HideButton.tsx";
 import { useData } from "./Reducers/dataContexReducer.tsx";
 
 import { useEffect, useState } from "react";
-import AddEditTask from "./components/Forms/AddEditTask/AddEditTask.tsx";
-import ViewTask from "./components/Forms/ViewTask/ViewTask.tsx";
-import AddEditBoard from "./components/Forms/AddEditBoard/AddEditBoard.tsx";
-import DeleteTaskBoard from "./components/Forms/DeleteTaskBoard/DeleteTaskBoard.tsx";
+import AddEditTask from "./components/Molecules/Modals/AddEditTask/AddEditTask.tsx";
+import ViewTask from "./components/Molecules/Modals/ViewTask/ViewTask.tsx";
+import AddEditBoard from "./components/Molecules/Modals/AddEditBoard/AddEditBoard.tsx";
+import DeleteTaskBoard from "./components/Molecules/Modals/DeleteTaskBoard/DeleteTaskBoard.tsx";
 import {
   useAction,
   useActionDispatch,
 } from "./Reducers/actionContexReducer.tsx";
-import Overlay from "./components/Overlay/Overlay.tsx";
+import Overlay from "./components/Atoms/Overlay/Overlay.tsx";
 import { useActive } from "./Reducers/activeContextReducer.tsx";
 import { useTask } from "./Reducers/taskContexReducer.tsx";
 

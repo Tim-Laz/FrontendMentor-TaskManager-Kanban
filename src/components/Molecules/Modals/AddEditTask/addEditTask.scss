@@ -1,0 +1,17 @@
+@use "../../../../colors.scss";
+
+.add-edit-task {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+
+  &__heading {
+    color: var(--paragraph);
+  }
+
+  &__label {
+    color: var(--heading-s);
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+}

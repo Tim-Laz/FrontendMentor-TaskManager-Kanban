@@ -1,0 +1,61 @@
+@use "../../../colors.scss";
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1.2rem;
+  background-color: var(--color-background);
+  transition: all 0.5s;
+  border-radius: 4px;
+  cursor: pointer;
+  &__input {
+    appearance: none;
+    background-color: var(--main-color);
+    margin-right: 1.6rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 1px solid rgba(130, 143, 163, 0.248914);
+    border-radius: 2px;
+
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+  }
+
+  &__input::before {
+    display: block;
+    content: "";
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  &__input:checked::before {
+    background-color: colors.$main-purple;
+    background-image: url("../../assets/icon-check.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 2px;
+  }
+
+  &__label {
+    color: var(--paragraph);
+    cursor: pointer;
+  }
+
+  &__input:checked + &__label {
+    color: var(--paragraph);
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+
+  &:hover {
+    background-color: colors.$main-purple-light;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .checkbox {
+    padding-right: 0.8rem;
+  }
+}

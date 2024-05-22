@@ -337,7 +337,7 @@ export default function Select({
           }
           onClick={handleButtonClick}
         >
-          <img src="../../assets/icon-vertical-ellipsis.svg" alt="" />
+          <img src="./assets/icon-vertical-ellipsis.svg" alt="" />
         </button>
       ) : (
         <button
@@ -352,7 +352,7 @@ export default function Select({
         >
           <span className="select__value">{activeStatus}</span>
           <span className="select__arrow">
-            <img src="../../assets/icon-chevron-down.svg" alt="" />
+            <img src="./assets/icon-chevron-down.svg" alt="" />
           </span>
         </button>
       )}

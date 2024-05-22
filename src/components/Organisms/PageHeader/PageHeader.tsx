@@ -51,16 +51,10 @@ export default function PageHeader({
             onClick={handleMobileClick}
             className="page-header__btn-mobile-nav page-header__btn-mobile-nav-open"
           >
-            <img
-              src="../../assets/icon-chevron-down.svg"
-              alt="mobile open icon"
-            />
+            <img src="./assets/icon-chevron-down.svg" alt="mobile open icon" />
           </button>
           <button className="page-header__btn-mobile-nav page-header__btn-mobile-nav-close">
-            <img
-              src="../../assets/icon-chevron-up.svg"
-              alt="mobile close icon"
-            />
+            <img src="./assets/icon-chevron-up.svg" alt="mobile close icon" />
           </button>
         </div>
         <div className="page-header__menu">
@@ -78,7 +72,7 @@ export default function PageHeader({
             {width > breakpoint ? (
               "+ Add New Task"
             ) : (
-              <img src="../../assets/icon-add-task-mobile.svg" />
+              <img src="./assets/icon-add-task-mobile.svg" />
             )}
           </Button>
           <Select

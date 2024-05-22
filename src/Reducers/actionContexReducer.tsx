@@ -45,7 +45,7 @@ export function useActionDispatch() {
   return useContext(ActionDispatchContext);
 }
 
-function actionReducer(data: string, action: { type: actionType }) {
+function actionReducer(_data: string, action: { type: actionType }) {
   switch (action.type) {
     case "adding board": {
       return "adding board";

@@ -23,7 +23,7 @@ html[data-theme="light"] {
   --dropdown-bg: #ffffff;
   --menu-hover: rgba(98, 95, 199, 0.1);
   --lines: #e4ebfa;
-  --logo: url("./assets/logo-dark.svg");
+  --logo: url("./logo-dark.svg");
   --new-column-bgc: linear-gradient(
     180deg,
     #e9effa 0%,
@@ -41,7 +41,7 @@ html[data-theme="dark"] {
   --dropdown-bg: #20212c;
   --menu-hover: #ffffff;
   --lines: #3e3f4e;
-  --logo: url("./assets/logo-light.svg");
+  --logo: url("./logo-light.svg");
   --new-column-bgc: linear-gradient(
     180deg,
     rgba(43, 44, 55, 0.25) 0%,
